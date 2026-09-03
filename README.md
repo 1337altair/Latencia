@@ -5,3 +5,6 @@ O Latencia é um app que eu fiz pra testar a internet sem precisar ficar abrindo
 Feito por 0xaltair
 
 Se o Windows falar que é um app perigoso, não precisa ter medo, frescura padrão do Windows com coisa que não tem licença
+
+
+(Provavelmente ele vai ter novas atualizações e algumas melhorias já que fiz a interface com preguiça)
