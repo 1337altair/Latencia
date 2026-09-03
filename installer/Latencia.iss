@@ -1,5 +1,5 @@
 #define AppName "Latencia"
-#define AppVersion "0.1.2"
+#define AppVersion "0.1.0"
 #define AppPublisher "0xaltair"
 #define AppExeName "Latencia.exe"
 

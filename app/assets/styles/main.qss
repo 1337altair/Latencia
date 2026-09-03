@@ -157,3 +157,82 @@ QHeaderView::section {
 QTableWidget::item {
     padding: 6px;
 }
+
+#DiagnosticProgress {
+    background: #15181c;
+    border: none;
+}
+
+#DiagnosticProgress::chunk {
+    background: #d7dade;
+}
+
+#DiagnosticSummary {
+    background: #15181c;
+    border: 1px solid #292d34;
+    border-radius: 7px;
+}
+
+#DiagnosticSummaryTitle {
+    color: #858b94;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+#DiagnosticScore {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+#DiagnosticHealth {
+    font-size: 19px;
+    font-weight: 600;
+    color: #e3e5e8;
+}
+
+#DiagnosticCard {
+    background: #15181c;
+    border: 1px solid #292d34;
+    border-radius: 7px;
+    min-height: 76px;
+}
+
+#DiagnosticCard[state="good"] {
+    border-left: 3px solid #7ea987;
+}
+
+#DiagnosticCard[state="fair"] {
+    border-left: 3px solid #b5a16d;
+}
+
+#DiagnosticCard[state="bad"] {
+    border-left: 3px solid #b66f6f;
+}
+
+#DiagnosticCardTitle {
+    color: #818792;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+#DiagnosticCardValue {
+    font-size: 19px;
+    font-weight: 650;
+}
+
+#DiagnosticCardDetail {
+    color: #777d86;
+    font-size: 10px;
+}
+
+#DiagnosticAnalysis {
+    background: #121519;
+    border: 1px solid #292d34;
+    border-radius: 7px;
+}
+
+#DiagnosticAnalysisTitle {
+    color: #8e949d;
+    font-size: 10px;
+    font-weight: 700;
+}

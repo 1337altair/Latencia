@@ -60,9 +60,9 @@ class MainWindow(QMainWindow):
             self.nav.append(button)
 
         side.addStretch()
-        signature = QLabel("0xaltair")
+        signature = QLabel("Feito por: 0xaltair")
         signature.setObjectName("Signature")
-        version = QLabel("v0.1.2")
+        version = QLabel("v0.1.0")
         version.setObjectName("Version")
         side.addWidget(signature)
         side.addWidget(version)
