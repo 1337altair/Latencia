@@ -27,7 +27,7 @@ class DiagnosticWorker(QThread):
                     "jitter": 0.0,
                     "packet_loss": 100.0,
                     "min": 0.0,
-                    "max": 0.0
+                    "max": 0.0,
                 }
 
             self.done.emit(analyze(result, network, gateway, dns, internet))
@@ -127,7 +127,6 @@ class DiagnosticsPage(QWidget):
         self.health_label.setObjectName("DiagnosticSummaryTitle")
         self.health = QLabel()
         self.health.setObjectName("DiagnosticHealth")
-        self.health.setText(t("no_diagnostic"))
         status_box.addWidget(self.health_label)
         status_box.addWidget(self.health)
 
@@ -148,8 +147,8 @@ class DiagnosticsPage(QWidget):
         self.loss = DiagnosticCard("packet_loss")
         self.dns = DiagnosticCard("diag_dns")
 
-        cards = [self.internet, self.gateway, self.ping, self.jitter, self.loss, self.dns]
-        for i, card in enumerate(cards):
+        self.cards = [self.internet, self.gateway, self.ping, self.jitter, self.loss, self.dns]
+        for i, card in enumerate(self.cards):
             grid.addWidget(card, i // 3, i % 3)
 
         page.addLayout(grid)
@@ -198,15 +197,33 @@ class DiagnosticsPage(QWidget):
             return "fair"
         return "bad"
 
-    def finished(self, data):
-        self.last = data
+    def quality_text(self, value, good, fair):
+        if value is None:
+            return "unknown"
+        if value <= good:
+            return "excellent"
+        if value <= fair:
+            return "fair"
+        return "poor"
+
+    def render_last(self):
+        if not self.last:
+            if self.worker and self.worker.isRunning():
+                self.health.setText(t("diag_checking"))
+                self.result.setText(t("diag_waiting"))
+            else:
+                self.health.setText(t("no_diagnostic"))
+                self.result.setText(t("diag_waiting"))
+            return
+
+        data = self.last
         metrics = data["metrics"]
 
         internet_state = "good" if metrics["internet"] == "online" else "bad"
         self.internet.set_data(
             t("online") if metrics["internet"] == "online" else t("diag_offline"),
             metrics["adapter"],
-            internet_state
+            internet_state,
         )
 
         gateway_ping = metrics["gateway_ping"]
@@ -214,38 +231,42 @@ class DiagnosticsPage(QWidget):
         self.gateway.set_data(
             gateway_value,
             metrics["gateway"],
-            self.metric_state(gateway_ping, 5, 25)
+            self.metric_state(gateway_ping, 5, 25),
         )
 
         self.ping.set_data(
             f'{metrics["ping"]:.1f} ms',
             t(self.quality_text(metrics["ping"], 30, 80)),
-            self.metric_state(metrics["ping"], 30, 80)
+            self.metric_state(metrics["ping"], 30, 80),
         )
 
         self.jitter.set_data(
             f'{metrics["jitter"]:.1f} ms',
             t(self.quality_text(metrics["jitter"], 10, 25)),
-            self.metric_state(metrics["jitter"], 10, 25)
+            self.metric_state(metrics["jitter"], 10, 25),
         )
 
         self.loss.set_data(
             f'{metrics["packet_loss"]:.1f}%',
             t(self.quality_text(metrics["packet_loss"], 0.1, 2)),
-            self.metric_state(metrics["packet_loss"], 0.1, 2)
+            self.metric_state(metrics["packet_loss"], 0.1, 2),
         )
 
         dns_value = f'{metrics["dns"]:.1f} ms' if metrics["dns"] is not None else "--"
+        dns_detail = t(self.quality_text(metrics["dns"], 60, 150)) if metrics["dns"] is not None else t("diag_failed")
         self.dns.set_data(
             dns_value,
-            t(self.quality_text(metrics["dns"], 60, 150)) if metrics["dns"] is not None else t("diag_failed"),
-            self.metric_state(metrics["dns"], 60, 150)
+            dns_detail,
+            self.metric_state(metrics["dns"], 60, 150),
         )
 
         self.score.setText(str(data["score"]))
         self.health.setText(t(data["health"]))
-        self.result.setText("\n".join(f"• {item}" for item in data["issues"]))
+        self.result.setText("\n".join(f'• {t(key)}' for key in data["issue_keys"]))
 
+    def finished(self, data):
+        self.last = data
+        self.render_last()
         self.progress.hide()
         self.button.setEnabled(True)
         self.button.setText(t("run_diagnostics"))
@@ -257,15 +278,6 @@ class DiagnosticsPage(QWidget):
         self.health.setText(t("test_failed"))
         self.result.setText(t("test_failed"))
 
-    def quality_text(self, value, good, fair):
-        if value is None:
-            return "unknown"
-        if value <= good:
-            return "excellent"
-        if value <= fair:
-            return "fair"
-        return "poor"
-
     def retranslate(self):
         self.title.setText(t("diagnostics_title"))
         self.subtitle.setText(t("diagnostics_sub"))
@@ -273,15 +285,13 @@ class DiagnosticsPage(QWidget):
         self.health_label.setText(t("diag_result"))
         self.analysis_title.setText(t("diag_analysis"))
 
-        if not self.worker or not self.worker.isRunning():
+        if self.worker and self.worker.isRunning():
+            self.button.setText(t("diag_running"))
+            self.health.setText(t("diag_checking"))
+        else:
             self.button.setText(t("run_diagnostics"))
 
-        for card in [self.internet, self.gateway, self.ping, self.jitter, self.loss, self.dns]:
+        for card in self.cards:
             card.retranslate()
 
-        if self.last:
-            self.health.setText(t(self.last["health"]))
-            self.result.setText("\n".join(f"• {item}" for item in self.last["issues"]))
-        else:
-            self.health.setText(t("no_diagnostic"))
-            self.result.setText(t("diag_waiting"))
+        self.render_last()

@@ -1,13 +1,13 @@
 QWidget {
-    background: #101216;
-    color: #e7e9ec;
+    background: #000000;
+    color: #eceef2;
     font-family: "Segoe UI";
     font-size: 13px;
 }
 
 #Sidebar {
-    background: #0c0e11;
-    border-right: 1px solid #24272d;
+    background: #000000;
+    border-right: 1px solid #121212;
 }
 
 #Brand {
@@ -17,7 +17,7 @@ QWidget {
 }
 
 #BrandSmall, #Version, #Signature, #Muted, #PageSubtitle, #MetricUnit {
-    color: #7d828c;
+    color: #7f858f;
 }
 
 #BrandSmall {
@@ -26,7 +26,7 @@ QWidget {
 }
 
 #Signature {
-    color: #a7abb2;
+    color: #b8bcc4;
     font-weight: 600;
 }
 
@@ -36,7 +36,7 @@ QWidget {
 
 QPushButton {
     background: transparent;
-    color: #a6abb3;
+    color: #adb2ba;
     border: 1px solid transparent;
     border-radius: 5px;
     padding: 9px 10px;
@@ -44,23 +44,24 @@ QPushButton {
 }
 
 QPushButton:hover {
-    background: #171a1f;
-    color: #eeeeee;
+    background: #0b0b0b;
+    color: #ffffff;
 }
 
 QPushButton:checked {
-    background: #1c1f25;
-    border-color: #292d34;
+    background: #0e0e0e;
+    border-color: #1b1b1b;
     color: #ffffff;
 }
 
 #Primary {
-    background: #e6e7e9;
-    color: #111318;
+    background: #f0f1f3;
+    color: #090909;
     padding: 10px 15px;
     font-weight: 700;
     text-align: center;
     min-width: 130px;
+    border-radius: 6px;
 }
 
 #Primary:hover {
@@ -68,8 +69,8 @@ QPushButton:checked {
 }
 
 #Primary:disabled {
-    background: #595c62;
-    color: #202226;
+    background: #5f6369;
+    color: #171717;
 }
 
 #PageTitle {
@@ -82,23 +83,23 @@ QPushButton:checked {
 }
 
 #State {
-    color: #9ea3ab;
-    border: 1px solid #2b2f36;
-    background: #15181c;
+    color: #a8adb6;
+    border: 1px solid #1a1a1a;
+    background: #070707;
     border-radius: 5px;
     padding: 6px 9px;
     font-size: 10px;
     font-weight: 700;
 }
 
-#Panel, #Metric {
-    background: #15181c;
-    border: 1px solid #292d34;
+#Panel, #Metric, #DiagnosticSummary, #DiagnosticCard, #DiagnosticAnalysis {
+    background: #050505;
+    border: 1px solid #161616;
     border-radius: 7px;
 }
 
-#SmallTitle, #MetricName {
-    color: #8d929b;
+#SmallTitle, #MetricName, #DiagnosticSummaryTitle, #DiagnosticAnalysisTitle, #DiagnosticCardTitle {
+    color: #8a9099;
     font-size: 10px;
     font-weight: 700;
 }
@@ -119,64 +120,14 @@ QPushButton:checked {
 }
 
 #Diagnostic {
-    color: #cfd2d7;
+    color: #d4d7dc;
     line-height: 1.4;
 }
 
-QComboBox {
-    background: #0f1114;
-    border: 1px solid #30343b;
-    border-radius: 5px;
-    padding: 8px 9px;
-    min-width: 220px;
-}
-
-QComboBox QAbstractItemView {
-    background: #15181c;
-    border: 1px solid #30343b;
-    selection-background-color: #292d34;
-}
-
-QTableWidget {
-    background: #121519;
-    alternate-background-color: #15181c;
-    border: 1px solid #292d34;
-    gridline-color: #24282e;
-    selection-background-color: #252930;
-}
-
-QHeaderView::section {
-    background: #181b20;
-    color: #a8adb5;
-    border: none;
-    border-bottom: 1px solid #292d34;
-    padding: 8px;
+#DiagnosticHealth {
+    font-size: 19px;
     font-weight: 600;
-}
-
-QTableWidget::item {
-    padding: 6px;
-}
-
-#DiagnosticProgress {
-    background: #15181c;
-    border: none;
-}
-
-#DiagnosticProgress::chunk {
-    background: #d7dade;
-}
-
-#DiagnosticSummary {
-    background: #15181c;
-    border: 1px solid #292d34;
-    border-radius: 7px;
-}
-
-#DiagnosticSummaryTitle {
-    color: #858b94;
-    font-size: 10px;
-    font-weight: 700;
+    color: #eceef2;
 }
 
 #DiagnosticScore {
@@ -184,17 +135,14 @@ QTableWidget::item {
     font-weight: 700;
 }
 
-#DiagnosticHealth {
+#DiagnosticCardValue {
     font-size: 19px;
-    font-weight: 600;
-    color: #e3e5e8;
+    font-weight: 650;
 }
 
-#DiagnosticCard {
-    background: #15181c;
-    border: 1px solid #292d34;
-    border-radius: 7px;
-    min-height: 76px;
+#DiagnosticCardDetail {
+    color: #777d87;
+    font-size: 10px;
 }
 
 #DiagnosticCard[state="good"] {
@@ -209,30 +157,46 @@ QTableWidget::item {
     border-left: 3px solid #b66f6f;
 }
 
-#DiagnosticCardTitle {
-    color: #818792;
-    font-size: 9px;
-    font-weight: 700;
+QComboBox {
+    background: #030303;
+    border: 1px solid #1a1a1a;
+    border-radius: 5px;
+    padding: 8px 9px;
+    min-width: 220px;
 }
 
-#DiagnosticCardValue {
-    font-size: 19px;
-    font-weight: 650;
+QComboBox QAbstractItemView {
+    background: #050505;
+    border: 1px solid #1a1a1a;
+    selection-background-color: #101010;
 }
 
-#DiagnosticCardDetail {
-    color: #777d86;
-    font-size: 10px;
+QTableWidget {
+    background: #040404;
+    alternate-background-color: #080808;
+    border: 1px solid #161616;
+    gridline-color: #111111;
+    selection-background-color: #111111;
 }
 
-#DiagnosticAnalysis {
-    background: #121519;
-    border: 1px solid #292d34;
-    border-radius: 7px;
+QHeaderView::section {
+    background: #090909;
+    color: #aeb3bb;
+    border: none;
+    border-bottom: 1px solid #161616;
+    padding: 8px;
+    font-weight: 600;
 }
 
-#DiagnosticAnalysisTitle {
-    color: #8e949d;
-    font-size: 10px;
-    font-weight: 700;
+QTableWidget::item {
+    padding: 6px;
+}
+
+#DiagnosticProgress {
+    background: #050505;
+    border: none;
+}
+
+#DiagnosticProgress::chunk {
+    background: #d7dade;
 }

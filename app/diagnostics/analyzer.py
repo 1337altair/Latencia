@@ -1,63 +1,42 @@
-from app.i18n.language import t
-
-
-def quality(value, good, fair, reverse=False):
-    if value is None:
-        return "unknown"
-
-    if reverse:
-        if value <= good:
-            return "good"
-        if value <= fair:
-            return "fair"
-        return "bad"
-
-    if value >= good:
-        return "good"
-    if value >= fair:
-        return "fair"
-    return "bad"
-
-
 def analyze(result, network, gateway, dns, internet):
     ping = result["ping"]
     jitter = result["jitter"]
     loss = result["packet_loss"]
     gateway_ping = gateway.get("latency")
 
-    issues = []
+    issue_keys = []
 
     if not internet.get("online"):
-        issues.append(t("diag_no_internet"))
+        issue_keys.append("diag_no_internet")
     else:
         if gateway_ping is not None and gateway_ping >= 30:
-            issues.append(t("diag_local_problem"))
+            issue_keys.append("diag_local_problem")
 
         if gateway_ping is not None and gateway_ping < 15 and ping >= 80:
-            issues.append(t("diag_external_problem"))
+            issue_keys.append("diag_external_problem")
 
         if loss >= 5:
-            issues.append(t("high_loss"))
+            issue_keys.append("high_loss")
         elif loss > 0:
-            issues.append(t("small_loss"))
+            issue_keys.append("small_loss")
 
         if jitter >= 30:
-            issues.append(t("high_jitter"))
+            issue_keys.append("high_jitter")
         elif jitter >= 15:
-            issues.append(t("mid_jitter"))
+            issue_keys.append("mid_jitter")
 
         if ping >= 100:
-            issues.append(t("high_ping"))
+            issue_keys.append("high_ping")
         elif ping >= 50:
-            issues.append(t("mid_ping"))
+            issue_keys.append("mid_ping")
 
         if dns is None:
-            issues.append(t("diag_dns_failed"))
+            issue_keys.append("diag_dns_failed")
         elif dns >= 150:
-            issues.append(t("diag_dns_slow"))
+            issue_keys.append("diag_dns_slow")
 
-    if not issues:
-        issues.append(t("all_good"))
+    if not issue_keys:
+        issue_keys.append("all_good")
 
     score = 100
     score -= min(loss * 8, 40)
@@ -87,7 +66,7 @@ def analyze(result, network, gateway, dns, internet):
     return {
         "score": score,
         "health": health,
-        "issues": issues,
+        "issue_keys": issue_keys,
         "metrics": {
             "internet": "online" if internet.get("online") else "offline",
             "gateway": gateway.get("gateway") or "-",
